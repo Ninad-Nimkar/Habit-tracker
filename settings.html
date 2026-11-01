@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Preferences and Data Management - Personal Habit Tracker">
+  <title>Settings - Personal Habit Tracker</title>
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Site Header & Global Nav (UI-01) -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand" aria-label="Personal Habit Tracker Home">
+        <span class="brand-badge">&#9632;</span>
+        <span>HABIT // TRACKER</span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link"><span class="nav-text">Dashboard</span></a></li>
+          <li><a href="add-habit.html" class="nav-link"><span class="nav-text">Add Habit</span></a></li>
+          <li><a href="progress.html" class="nav-link"><span class="nav-text">Progress</span></a></li>
+          <li><a href="settings.html" class="nav-link active"><span class="nav-text">Settings</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button id="theme-toggle-btn" class="btn btn-sm" aria-label="Toggle dark/light theme">
+          <span aria-hidden="true">&#9790;</span> Dark
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <div class="container" style="max-width: 800px;">
+      
+      <!-- Theme & Personalisation (FR-24, FR-25) -->
+      <section class="form-card" style="margin-bottom: 2rem;" aria-labelledby="settings-personal-heading">
+        <div class="form-header">
+          <h1 id="settings-personal-heading" style="font-size: 1.35rem; font-weight: 800;">Appearance &amp; Preferences</h1>
+          <p style="color: var(--fg-secondary); font-size: 0.85rem; margin-top: 0.25rem;">
+            Strictly high-contrast, dual-tone palettes engineered for focus and zero distraction.
+          </p>
+        </div>
+
+        <!-- Mode Toggle -->
+        <div class="form-group">
+          <label class="form-label">Theme Mode (FR-24)</label>
+          <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+            <label style="display: flex; align-items: center; gap: 0.45rem; cursor: pointer; font-weight: 600;">
+              <input type="radio" name="theme-choice" value="light" style="accent-color: var(--fg-primary);"> Light Canvas
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.45rem; cursor: pointer; font-weight: 600;">
+              <input type="radio" name="theme-choice" value="dark" style="accent-color: var(--fg-primary);"> Dark Canvas
+            </label>
+          </div>
+        </div>
+
+        <!-- Two-Color Schemes -->
+        <div class="form-group">
+          <label class="form-label">Two-Color Palette System</label>
+          <p style="font-size: 0.8rem; color: var(--fg-secondary); margin-bottom: 0.5rem;">
+            Every element adheres strictly to two colors. Zero blue, zero purple.
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+              <input type="radio" name="scheme-choice" value="monochrome" style="accent-color: var(--fg-primary);">
+              <span><strong>Pure Monochromatic</strong> (Black &amp; Crisp White)</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+              <input type="radio" name="scheme-choice" value="emerald" style="accent-color: var(--fg-primary);">
+              <span><strong>Botanical Emerald</strong> (Deep Forest &amp; Fresh Mint)</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+              <input type="radio" name="scheme-choice" value="ochre" style="accent-color: var(--fg-primary);">
+              <span><strong>Warm Ochre</strong> (Espresso Charcoal &amp; Earthy Ochre)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Display Name (FR-25) -->
+        <div class="form-group">
+          <label for="settings-display-name" class="form-label">Your Name (Dashboard Greeting)</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="text" id="settings-display-name" class="form-input" placeholder="e.g. Alex" maxlength="30">
+            <button type="button" id="save-profile-btn" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Data Management & Backups (FR-27, FR-28, FR-29, FR-30, FR-31) -->
+      <section class="form-card" style="margin-bottom: 2rem;" aria-labelledby="settings-data-heading">
+        <div class="form-header">
+          <h2 id="settings-data-heading" style="font-size: 1.35rem; font-weight: 800;">Data Persistence &amp; Backups</h2>
+          <p style="color: var(--fg-secondary); font-size: 0.85rem; margin-top: 0.25rem;">
+            All your data remains 100% on your device via browser LocalStorage. No external tracking or server calls.
+          </p>
+        </div>
+
+        <!-- Export JSON (FR-29) -->
+        <div style="padding: 1rem 0; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+          <div>
+            <strong style="display: block;">Export Habit Data (JSON)</strong>
+            <small style="color: var(--fg-secondary);">Download an unencrypted portable JSON backup of all your habits, streaks, and completion history.</small>
+          </div>
+          <button type="button" id="export-data-btn" class="btn btn-primary">Download Backup</button>
+        </div>
+
+        <!-- Import JSON (FR-30) -->
+        <div style="padding: 1rem 0; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+          <div>
+            <strong style="display: block;">Import Habit Data</strong>
+            <small style="color: var(--fg-secondary);">Restore your habits and streaks from a previously saved JSON file.</small>
+          </div>
+          <label class="btn" style="cursor: pointer;">
+            Choose File...
+            <input type="file" id="import-file-input" accept=".json,application/json" style="display: none;">
+          </label>
+        </div>
+
+        <!-- Demo Data Loader -->
+        <div style="padding: 1rem 0; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+          <div>
+            <strong style="display: block;">Seed Starter Data</strong>
+            <small style="color: var(--fg-secondary);">Pre-populate starter habits and check-in logs to test analytics and streak calculations.</small>
+          </div>
+          <button type="button" id="seed-demo-btn" class="btn">Load Sample Data</button>
+        </div>
+
+        <!-- Reset All Data (FR-31) -->
+        <div style="padding: 1rem 0; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+          <div>
+            <strong style="display: block;">Factory Reset</strong>
+            <small style="color: var(--fg-secondary);">Permanently erase all stored habits, completions, and logs.</small>
+          </div>
+          <button type="button" id="reset-all-btn" class="btn btn-danger">Erase All Data</button>
+        </div>
+
+        <!-- Storage Quota Meter (NFR-03, Section 2.5) -->
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.8rem; color: var(--fg-secondary); display: flex; justify-content: space-between;">
+          <span>Storage Usage:</span>
+          <span id="storage-usage-meter" style="font-weight: 700; font-variant-numeric: tabular-nums;">Calculating...</span>
+        </div>
+      </section>
+
+      <!-- System Architecture & Verification Info -->
+      <section class="form-card" aria-labelledby="settings-spec-heading">
+        <div class="form-header">
+          <h2 id="settings-spec-heading" style="font-size: 1.15rem; font-weight: 700;">IEEE 830 Specification Details</h2>
+        </div>
+        <div style="font-size: 0.85rem; line-height: 1.6; color: var(--fg-secondary);">
+          <p><strong>Architecture:</strong> Client-Side Presentation, Application Logic, &amp; LocalStorage.</p>
+          <p><strong>Standard:</strong> Prepared in accordance with IEEE 830 / ISO/IEC/IEEE 29148 guidelines.</p>
+          <p><strong>Accessibility:</strong> WCAG 2.1 AA Compliant with minimum 4.5:1 text contrast.</p>
+          <p><strong>Dependencies:</strong> Zero third-party runtime frameworks. 100% Native Web Standards.</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Global Toast Notification Container -->
+  <div class="toast-container" aria-live="polite"></div>
+
+  <!-- Application Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/streaks.js"></script>
+  <script src="js/habits.js"></script>
+  <script src="js/stats.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Progress and Analytics - Personal Habit Tracker">
+  <title>Progress &amp; Analytics - Personal Habit Tracker</title>
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Site Header & Global Nav (UI-01) -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand" aria-label="Personal Habit Tracker Home">
+        <span class="brand-badge">&#9632;</span>
+        <span>HABIT // TRACKER</span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link"><span class="nav-text">Dashboard</span></a></li>
+          <li><a href="add-habit.html" class="nav-link"><span class="nav-text">Add Habit</span></a></li>
+          <li><a href="progress.html" class="nav-link active"><span class="nav-text">Progress</span></a></li>
+          <li><a href="settings.html" class="nav-link"><span class="nav-text">Settings</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="add-habit.html" class="btn btn-primary btn-sm">+ New</a>
+        <button id="theme-toggle-btn" class="btn btn-sm" aria-label="Toggle dark/light theme">
+          <span aria-hidden="true">&#9790;</span> Dark
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <div class="container">
+      
+      <!-- Top Level Analytics KPIs (FR-18) -->
+      <section class="kpi-grid" aria-label="Executive Analytics Summary">
+        <div class="kpi-card">
+          <div class="kpi-label">Today's Focus</div>
+          <div id="prog-today-pct" class="kpi-value">0%</div>
+          <div class="kpi-meta">Daily completion rate</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-label">Active Streak Peak</div>
+          <div id="prog-best-streak" class="kpi-value">0d</div>
+          <div class="kpi-meta">Current maximum streak</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-label">Total Logged</div>
+          <div id="prog-total-completions" class="kpi-value">0</div>
+          <div class="kpi-meta">Lifetime check-ins</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-label">Routines Tracked</div>
+          <div id="prog-active-habits" class="kpi-value">0</div>
+          <div class="kpi-meta">Active commitments</div>
+        </div>
+      </section>
+
+      <!-- 14-Day Completion Trends Chart (FR-19) -->
+      <section class="chart-card" aria-label="Completion Trends">
+        <div class="chart-header">
+          <div>
+            <h2 style="font-size: 1.15rem; font-weight: 700;">14-Day Completion Trend</h2>
+            <p style="font-size: 0.8rem; color: var(--fg-secondary);">Daily percentage of scheduled habits completed</p>
+          </div>
+          <span class="habit-category-tag">LAST 14 DAYS</span>
+        </div>
+        <div id="trend-chart-container" class="svg-chart-container">
+          <!-- Rendered via SVG -->
+        </div>
+      </section>
+
+      <!-- Interactive Month Calendar View (FR-20, FR-09, FR-10) -->
+      <section class="calendar-card" aria-label="Monthly Calendar History">
+        <div class="calendar-header">
+          <div>
+            <h2 id="cal-month-title" style="font-size: 1.25rem; font-weight: 800;">Calendar</h2>
+            <p style="font-size: 0.8rem; color: var(--fg-secondary);">Click any past date to view details or log retroactive check-ins</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button type="button" id="cal-prev-btn" class="btn btn-sm" aria-label="Previous Month">&larr; Prev</button>
+            <button type="button" id="cal-next-btn" class="btn btn-sm" aria-label="Next Month">Next &rarr;</button>
+          </div>
+        </div>
+        <div id="calendar-days-grid" class="calendar-grid">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- Per-Habit Performance Table (FR-17) -->
+      <section class="chart-card" aria-label="Habit Performance Metrics">
+        <div class="chart-header">
+          <div>
+            <h2 style="font-size: 1.15rem; font-weight: 700;">Habit Performance Breakdown</h2>
+            <p style="font-size: 0.8rem; color: var(--fg-secondary);">Completion consistency across multiple time horizons</p>
+          </div>
+        </div>
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+            <thead>
+              <tr style="border-bottom: 2px solid var(--border-color); font-size: 0.75rem; text-transform: uppercase; color: var(--fg-secondary);">
+                <th style="padding: 0.75rem 0.5rem;">Habit</th>
+                <th style="padding: 0.75rem 0.5rem;">Category</th>
+                <th style="padding: 0.75rem 0.5rem;">7 Days</th>
+                <th style="padding: 0.75rem 0.5rem;">30 Days</th>
+                <th style="padding: 0.75rem 0.5rem;">All Time</th>
+                <th style="padding: 0.75rem 0.5rem;">Current / Best Streak</th>
+              </tr>
+            </thead>
+            <tbody id="performance-table-body">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Milestone Badges (FR-26) -->
+      <section class="chart-card" aria-label="Milestone Badges">
+        <div class="chart-header">
+          <div>
+            <h2 style="font-size: 1.15rem; font-weight: 700;">Milestones &amp; Streaks</h2>
+            <p style="font-size: 0.8rem; color: var(--fg-secondary);">Habit formation achievements and consistency markers</p>
+          </div>
+        </div>
+        <div id="badges-grid" class="badges-grid">
+          <!-- Badges dynamically rendered -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Day Detail Modal for Retroactive Completion (FR-09, FR-10, FR-15) -->
+  <div id="day-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="day-modal-date" aria-hidden="true">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="day-modal-date" style="font-size: 1.15rem; font-weight: 700;">Habits for Date</h3>
+        <button type="button" class="btn btn-sm" onclick="UI.closeModal('day-modal')" aria-label="Close modal">&times;</button>
+      </div>
+      <div id="day-habits-list" style="margin: 1rem 0; max-height: 320px; overflow-y: auto;">
+        <!-- Dynamically rendered -->
+      </div>
+      <div class="modal-footer">
+        <button id="close-day-modal-btn" type="button" class="btn btn-primary">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Toast Notification Container -->
+  <div class="toast-container" aria-live="polite"></div>
+
+  <!-- Application Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/streaks.js"></script>
+  <script src="js/habits.js"></script>
+  <script src="js/stats.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Personal Habit Tracker - High contrast, distraction-free habit formation and streak tracking.">
+  <title>Personal Habit Tracker - Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Site Header & Global Nav (UI-01) -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand" aria-label="Personal Habit Tracker Home">
+        <span class="brand-badge">&#9632;</span>
+        <span>HABIT // TRACKER</span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link active"><span class="nav-text">Dashboard</span></a></li>
+          <li><a href="add-habit.html" class="nav-link"><span class="nav-text">Add Habit</span></a></li>
+          <li><a href="progress.html" class="nav-link"><span class="nav-text">Progress</span></a></li>
+          <li><a href="settings.html" class="nav-link"><span class="nav-text">Settings</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="add-habit.html" class="btn btn-primary btn-sm">+ New</a>
+        <button id="theme-toggle-btn" class="btn btn-sm" aria-label="Toggle dark/light theme">
+          <span aria-hidden="true">&#9790;</span> Dark
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <div class="container">
+      
+      <!-- Minimal Dashboard Header (FR-25) -->
+      <div class="dash-header">
+        <div>
+          <h1 id="greeting-text" class="dash-title">Good day</h1>
+          <div id="date-indicator" class="dash-subtitle">Loading date...</div>
+        </div>
+        <div class="dash-stat-pill">
+          <span id="kpi-rate" class="dash-pill-num">0%</span>
+          <span id="kpi-scheduled" class="dash-pill-desc">0 of 0 completed</span>
+        </div>
+      </div>
+
+      <!-- Clean Summary Overview Strip (FR-16, FR-18) -->
+      <section class="overview-strip" aria-label="Habit Performance Overview">
+        <div class="overview-progress-col">
+          <div class="overview-progress-top">
+            <span class="overview-col-label">Today's Progress</span>
+          </div>
+          <div class="progress-rail">
+            <div id="kpi-rate-fill" class="progress-fill"></div>
+          </div>
+        </div>
+        <div class="overview-stats-col">
+          <div class="overview-stat-unit">
+            <span class="overview-stat-label">Best Streak</span>
+            <span id="kpi-best-streak" class="overview-stat-val">0d</span>
+            <span id="kpi-best-habit" style="display: none;"></span>
+          </div>
+          <div class="overview-stat-unit">
+            <span class="overview-stat-label">Total Check-Ins</span>
+            <span id="kpi-total-completions" class="overview-stat-val">0</span>
+          </div>
+          <div class="overview-stat-unit">
+            <span class="overview-stat-label">Active Habits</span>
+            <span id="kpi-active-habits" class="overview-stat-val">0</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Search, Filters, and Layout Controls (FR-21, FR-22, FR-23) -->
+      <section class="controls-bar" aria-label="Habit Controls">
+        <div class="search-box">
+          <span aria-hidden="true">&#9906;</span>
+          <input type="search" id="search-input" placeholder="Search habits..." aria-label="Search habits by name">
+        </div>
+
+        <div class="controls-right">
+          <div class="filter-group" role="group" aria-label="Habit Status Filters">
+            <button type="button" class="pill-filter active" data-filter="all">All</button>
+            <button type="button" class="pill-filter" data-filter="pending">Pending</button>
+            <button type="button" class="pill-filter" data-filter="completed">Done</button>
+            <button type="button" class="pill-filter" data-filter="archived">Archived</button>
+          </div>
+
+          <select id="category-filter" class="select-custom" aria-label="Filter by Category">
+            <option value="all">All</option>
+          </select>
+
+          <select id="sort-filter" class="select-custom" aria-label="Sort Habits">
+            <option value="name">Sort: A-Z</option>
+            <option value="streak">Sort: Streak</option>
+            <option value="created">Sort: Newest</option>
+          </select>
+
+          <button id="view-toggle-btn" class="btn btn-sm btn-icon" title="Toggle view" aria-label="Switch between card and list layout">
+            &#9776;
+          </button>
+        </div>
+      </section>
+
+      <!-- Habit Cards Container (FR-06) -->
+      <section id="habits-list" class="habits-container view-cards" aria-label="Habits List">
+        <!-- Rendered dynamically by app.js -->
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Delete Confirmation Modal (FR-04) -->
+  <div id="delete-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title" aria-hidden="true">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="delete-modal-title" style="font-size: 1.15rem; font-weight: 700;">Confirm Deletion</h3>
+        <button type="button" class="btn btn-sm" onclick="UI.closeModal('delete-modal')" aria-label="Close dialog">&times;</button>
+      </div>
+      <p style="margin: 1rem 0; font-size: 0.95rem; line-height: 1.4;">
+        Are you sure you want to delete <strong id="delete-habit-name">this habit</strong>? All completion logs and streak history for this habit will be permanently deleted.
+      </p>
+      <div class="modal-footer">
+        <button id="cancel-delete-btn" type="button" class="btn">Cancel</button>
+        <button id="confirm-delete-btn" type="button" class="btn btn-primary">Delete Permanently</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Keyboard Shortcuts Modal -->
+  <div id="shortcuts-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="shortcuts-modal-title" aria-hidden="true">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="shortcuts-modal-title" style="font-size: 1.15rem; font-weight: 700;">Keyboard Shortcuts</h3>
+        <button type="button" class="btn btn-sm" onclick="UI.closeModal('shortcuts-modal')" aria-label="Close dialog">&times;</button>
+      </div>
+      <div style="display: grid; grid-template-columns: 80px 1fr; gap: 0.75rem; font-size: 0.9rem; margin-top: 1rem;">
+        <kbd style="border: 1px solid var(--border-color); padding: 0.2rem 0.4rem; text-align: center; border-radius: 3px;">N</kbd>
+        <span>Add a new habit</span>
+        <kbd style="border: 1px solid var(--border-color); padding: 0.2rem 0.4rem; text-align: center; border-radius: 3px;">T</kbd>
+        <span>Toggle light / dark mode</span>
+        <kbd style="border: 1px solid var(--border-color); padding: 0.2rem 0.4rem; text-align: center; border-radius: 3px;">?</kbd>
+        <span>Show this shortcuts modal</span>
+        <kbd style="border: 1px solid var(--border-color); padding: 0.2rem 0.4rem; text-align: center; border-radius: 3px;">Esc</kbd>
+        <span>Close open modal</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="UI.closeModal('shortcuts-modal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Toast Notification Container -->
+  <div class="toast-container" aria-live="polite"></div>
+
+  <!-- Application Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/streaks.js"></script>
+  <script src="js/habits.js"></script>
+  <script src="js/stats.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+/**
+ * responsive.css - Media Queries & Mobile Adaptation (320px to 1920px)
+ * Compliant with UI-02 and TC-10
+ */
+
+/* Large Desktops (1440px and up) */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1240px;
+  }
+  .kpi-value {
+    font-size: 2.25rem;
+  }
+}
+
+/* Tablets and small laptops (max 992px) */
+@media (max-width: 992px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .overview-strip {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
+  }
+
+  .overview-stats-col {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .overview-stat-unit {
+    padding-left: 0;
+    border-left: none;
+  }
+  
+  .controls-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  
+  .search-box {
+    max-width: 100%;
+  }
+  
+  .controls-right {
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+/* Mobile Screens (max 768px) */
+@media (max-width: 768px) {
+  .header-inner {
+    height: auto;
+    padding: 0.75rem 0;
+    flex-wrap: wrap;
+  }
+  
+  .brand {
+    font-size: 1.05rem;
+  }
+
+  .dash-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .dash-title {
+    font-size: 1.4rem;
+  }
+
+  .habits-container.view-list .habit-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .habits-container.view-list .habit-card-header {
+    flex-direction: row;
+  }
+
+  .nav-links {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 0.5rem;
+    margin-top: 0.25rem;
+  }
+
+  .nav-link {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.8rem;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .nav-link span {
+    display: none; /* Icon only or compact text on mobile if needed */
+  }
+
+  .nav-link .nav-text {
+    display: inline;
+  }
+
+  .form-card {
+    padding: 1.25rem;
+  }
+
+  .weekdays-picker {
+    gap: 0.25rem;
+  }
+
+  .weekday-btn {
+    padding: 0.5rem 0.15rem;
+    font-size: 0.75rem;
+  }
+
+  .calendar-grid {
+    gap: 0.2rem;
+  }
+
+  .cal-day-cell {
+    padding: 0.2rem;
+    font-size: 0.75rem;
+  }
+
+  .cal-completion-pill {
+    font-size: 0.6rem;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+}
+
+/* Small Smart Phones (down to 320px) - Compliant with TC-10 */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 0.85rem;
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .kpi-card {
+    padding: 1rem;
+  }
+
+  .kpi-value {
+    font-size: 1.75rem;
+  }
+
+  .habit-card {
+    padding: 1rem;
+  }
+
+  .habit-name {
+    font-size: 1.05rem;
+  }
+
+  .checkin-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 1.1rem;
+  }
+
+  .status-bar-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .badges-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-box {
+    padding: 1.15rem;
+  }
+
+  .toast-container {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+  .toast {
+    width: 100%;
+    text-align: center;
+  }
+}
+
