@@ -172,9 +172,175 @@ const DashboardPage = {
 
   init() {
     this.renderKPIs();
+    this.renderSpotlight();
+    this.renderMomentumStrip();
+    this.setupQuickAdd();
     this.setupControls();
     this.renderHabits();
     this.setupDeleteModal();
+  },
+
+  refreshAll() {
+    this.renderKPIs();
+    this.renderSpotlight();
+    this.renderMomentumStrip();
+    this.renderHabits();
+  },
+
+  renderSpotlight() {
+    const el = document.getElementById('focus-spotlight');
+    if (!el) return;
+
+    const habits = Habits.getAll(false); // active habits
+    const today = new Date();
+    const todayISO = formatDateToISO(today);
+
+    // Find pending habits scheduled today
+    const pendingScheduled = habits.filter(h => Streaks.isScheduled(h, today) && !Habits.isCompletedOn(h.id, todayISO));
+    const allScheduled = habits.filter(h => Streaks.isScheduled(h, today));
+
+    if (allScheduled.length === 0) {
+      el.innerHTML = `
+        <div class="focus-spotlight-left">
+          <span class="focus-icon">&#9675;</span>
+          <div>
+            <div class="focus-text-title">No habits scheduled for today</div>
+            <div class="focus-text-sub">Add a routine below or enjoy a rest day.</div>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    if (pendingScheduled.length === 0) {
+      el.innerHTML = `
+        <div class="focus-spotlight-left">
+          <span class="focus-icon">&#10003;</span>
+          <div>
+            <div class="focus-text-title">All daily habits completed!</div>
+            <div class="focus-text-sub">You've achieved 100% of your scheduled commitments for today.</div>
+          </div>
+        </div>
+        <span class="pill-filter active" style="font-size: 0.75rem; pointer-events: none;">Flawless Day</span>
+      `;
+      return;
+    }
+
+    // Sort pending by highest streak first (protect the longest streak!)
+    pendingScheduled.sort((a, b) => Streaks.calculateCurrent(b) - Streaks.calculateCurrent(a));
+    const focusHabit = pendingScheduled[0];
+    const streak = Streaks.calculateCurrent(focusHabit);
+
+    el.innerHTML = `
+      <div class="focus-spotlight-left">
+        <span class="focus-icon">&#9889;</span>
+        <div>
+          <div class="focus-text-title">Focus Next: ${this.escapeHtml(focusHabit.name)}</div>
+          <div class="focus-text-sub">
+            ${streak > 0 ? `${streak}-day streak on the line! Keep your momentum alive.` : `Scheduled for today in ${this.escapeHtml(focusHabit.category || 'General')}.`}
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary btn-sm btn-focus-check">
+        &#10003; Check Off
+      </button>
+    `;
+
+    const checkBtn = el.querySelector('.btn-focus-check');
+    if (checkBtn) {
+      checkBtn.addEventListener('click', () => {
+        Habits.toggleCompletion(focusHabit.id, todayISO);
+        UI.showToast(`Completed: ${focusHabit.name}!`);
+        this.refreshAll();
+      });
+    }
+  },
+
+  renderMomentumStrip() {
+    const el = document.getElementById('momentum-strip');
+    if (!el) return;
+
+    const trends = Stats.getDailyTrends(14); // Last 14 days
+    let html = `
+      <div class="momentum-label">14-Day Activity Momentum</div>
+      <div class="momentum-days">
+    `;
+
+    trends.forEach(day => {
+      let dotClass = 'momentum-dot';
+      let title = `${day.date} (${day.dayName}): ${day.completedCount}/${day.scheduledCount} (${day.percent}%)`;
+      if (day.scheduledCount > 0) {
+        if (day.percent === 100) dotClass += ' done';
+        else if (day.percent > 0) dotClass += ' partial';
+      } else {
+        title += ' (No habits scheduled)';
+      }
+
+      html += `
+        <div class="momentum-dot-wrap" title="${title}">
+          <span class="${dotClass}"></span>
+          <span class="momentum-day-text">${day.dayName[0]}</span>
+        </div>
+      `;
+    });
+
+    html += '</div>';
+    el.innerHTML = html;
+  },
+
+  setupQuickAdd() {
+    const form = document.getElementById('quick-add-form');
+    const input = document.getElementById('quick-add-input');
+    const catSelect = document.getElementById('quick-add-category');
+
+    if (form && input) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = input.value.trim();
+        if (!name) return;
+
+        const res = Habits.create({
+          name,
+          category: catSelect ? catSelect.value : 'General',
+          frequency: [0, 1, 2, 3, 4, 5, 6],
+          startDate: formatDateToISO()
+        });
+
+        if (res.success) {
+          input.value = '';
+          UI.showToast(`Added habit: ${name}`);
+          const catFilter = document.getElementById('category-filter');
+          if (catFilter) this.populateCategoryFilter(catFilter);
+          this.refreshAll();
+        } else {
+          UI.showToast(res.errors && res.errors.name ? res.errors.name : 'Could not add habit');
+        }
+      });
+    }
+
+    // Template chips
+    document.querySelectorAll('.template-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const name = chip.dataset.name;
+        const category = chip.dataset.cat || 'General';
+
+        const res = Habits.create({
+          name,
+          category,
+          frequency: [0, 1, 2, 3, 4, 5, 6],
+          startDate: formatDateToISO()
+        });
+
+        if (res.success) {
+          UI.showToast(`Added habit: ${name}`);
+          const catFilter = document.getElementById('category-filter');
+          if (catFilter) this.populateCategoryFilter(catFilter);
+          this.refreshAll();
+        } else {
+          UI.showToast(res.errors && res.errors.name ? res.errors.name : `Habit "${name}" already exists`);
+        }
+      });
+    });
   },
 
   renderKPIs() {
@@ -421,8 +587,7 @@ const DashboardPage = {
       const res = Habits.toggleCompletion(habit.id, todayISO);
       if (res.success) {
         UI.showToast(res.completed ? `Checked off: ${habit.name}` : `Undone: ${habit.name}`);
-        this.renderKPIs();
-        this.renderHabits();
+        this.refreshAll();
       }
     });
 
@@ -434,8 +599,7 @@ const DashboardPage = {
         const res = Habits.toggleCompletion(habit.id, date);
         if (res.success) {
           UI.showToast(res.completed ? `Logged for ${date}` : `Removed log for ${date}`);
-          this.renderKPIs();
-          this.renderHabits();
+          this.refreshAll();
         } else if (res.message) {
           UI.showToast(res.message);
         }
@@ -447,8 +611,7 @@ const DashboardPage = {
     archiveBtn.addEventListener('click', () => {
       const updated = Habits.toggleArchive(habit.id);
       UI.showToast(updated.archived ? `Archived: ${habit.name}` : `Restored: ${habit.name}`);
-      this.renderKPIs();
-      this.renderHabits();
+      this.refreshAll();
     });
 
     // Delete button
@@ -475,8 +638,7 @@ const DashboardPage = {
           UI.showToast(`Deleted habit${habit ? ': ' + habit.name : ''}`);
           this.habitToDeleteId = null;
           UI.closeModal('delete-modal');
-          this.renderKPIs();
-          this.renderHabits();
+          this.refreshAll();
         }
       });
     }

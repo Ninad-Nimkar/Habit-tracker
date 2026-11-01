@@ -53,30 +53,76 @@
         </div>
       </div>
 
-      <!-- Clean Summary Overview Strip (FR-16, FR-18) -->
+      <!-- Priority Habit Spotlight (Dynamic Momentum Callout) -->
+      <section id="focus-spotlight" class="focus-spotlight" aria-label="Daily Priority Habit">
+        <!-- Rendered dynamically by app.js -->
+      </section>
+
+      <!-- Clean Summary Overview Strip with 14-Day Activity Momentum -->
       <section class="overview-strip" aria-label="Habit Performance Overview">
-        <div class="overview-progress-col">
-          <div class="overview-progress-top">
-            <span class="overview-col-label">Today's Progress</span>
+        <div class="overview-top-row">
+          <div class="overview-progress-col">
+            <div class="overview-progress-top">
+              <span class="overview-col-label">Today's Progress</span>
+            </div>
+            <div class="progress-rail">
+              <div id="kpi-rate-fill" class="progress-fill"></div>
+            </div>
           </div>
-          <div class="progress-rail">
-            <div id="kpi-rate-fill" class="progress-fill"></div>
+          <div class="overview-stats-col">
+            <div class="overview-stat-unit">
+              <span class="overview-stat-label">Best Streak</span>
+              <span id="kpi-best-streak" class="overview-stat-val">0d</span>
+              <span id="kpi-best-habit" style="display: none;"></span>
+            </div>
+            <div class="overview-stat-unit">
+              <span class="overview-stat-label">Total Check-Ins</span>
+              <span id="kpi-total-completions" class="overview-stat-val">0</span>
+            </div>
+            <div class="overview-stat-unit">
+              <span class="overview-stat-label">Active Habits</span>
+              <span id="kpi-active-habits" class="overview-stat-val">0</span>
+            </div>
           </div>
         </div>
-        <div class="overview-stats-col">
-          <div class="overview-stat-unit">
-            <span class="overview-stat-label">Best Streak</span>
-            <span id="kpi-best-streak" class="overview-stat-val">0d</span>
-            <span id="kpi-best-habit" style="display: none;"></span>
-          </div>
-          <div class="overview-stat-unit">
-            <span class="overview-stat-label">Total Check-Ins</span>
-            <span id="kpi-total-completions" class="overview-stat-val">0</span>
-          </div>
-          <div class="overview-stat-unit">
-            <span class="overview-stat-label">Active Habits</span>
-            <span id="kpi-active-habits" class="overview-stat-val">0</span>
-          </div>
+
+        <!-- 14-Day Activity Momentum Strip -->
+        <div id="momentum-strip" class="momentum-strip" aria-label="14-Day Momentum Tracker">
+          <!-- Rendered dynamically by app.js -->
+        </div>
+      </section>
+
+      <!-- Inline Quick-Add & Starter Templates -->
+      <section class="quick-add-section" aria-label="Quick Add Habit">
+        <form id="quick-add-form" class="quick-add-bar">
+          <span class="quick-add-icon" aria-hidden="true">+</span>
+          <input 
+            type="text" 
+            id="quick-add-input" 
+            class="quick-add-input" 
+            placeholder="Quick add: Type a habit and press Enter... (e.g. 15 min stretch)" 
+            maxlength="50" 
+            required 
+            aria-label="Habit name"
+          >
+          <select id="quick-add-category" class="select-custom quick-add-select" aria-label="Category">
+            <option value="Health">Health</option>
+            <option value="Study">Study</option>
+            <option value="Fitness">Fitness</option>
+            <option value="Mind">Mind</option>
+            <option value="Work">Work</option>
+            <option value="Personal">Personal</option>
+          </select>
+          <button type="submit" class="btn btn-primary btn-sm">Add Habit</button>
+        </form>
+
+        <div class="template-chips-row">
+          <span class="template-label">Popular presets:</span>
+          <button type="button" class="template-chip" data-name="Drink 2L Water" data-cat="Health">+ 2L Water</button>
+          <button type="button" class="template-chip" data-name="20-Min Reading" data-cat="Study">+ 20-min Reading</button>
+          <button type="button" class="template-chip" data-name="Walk 10,000 Steps" data-cat="Fitness">+ 10k Steps</button>
+          <button type="button" class="template-chip" data-name="10-Min Meditation" data-cat="Mind">+ Meditate</button>
+          <button type="button" class="template-chip" data-name="Evening Journal" data-cat="Personal">+ Journal</button>
         </div>
       </section>
 
