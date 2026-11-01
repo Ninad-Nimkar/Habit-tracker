@@ -52,12 +52,14 @@
         <!-- Mode Toggle -->
         <div class="form-group">
           <label class="form-label">Theme Mode (FR-24)</label>
-          <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
-            <label style="display: flex; align-items: center; gap: 0.45rem; cursor: pointer; font-weight: 600;">
-              <input type="radio" name="theme-choice" value="light" style="accent-color: var(--fg-primary);"> Light Canvas
+          <div class="radio-card-grid">
+            <label class="radio-card-label">
+              <input type="radio" name="theme-choice" value="light" style="accent-color: var(--fg-primary);">
+              <span>Light Canvas</span>
             </label>
-            <label style="display: flex; align-items: center; gap: 0.45rem; cursor: pointer; font-weight: 600;">
-              <input type="radio" name="theme-choice" value="dark" style="accent-color: var(--fg-primary);"> Dark Canvas
+            <label class="radio-card-label">
+              <input type="radio" name="theme-choice" value="dark" style="accent-color: var(--fg-primary);">
+              <span>Dark Canvas</span>
             </label>
           </div>
         </div>
@@ -65,21 +67,21 @@
         <!-- Two-Color Schemes -->
         <div class="form-group">
           <label class="form-label">Two-Color Palette System</label>
-          <p style="font-size: 0.8rem; color: var(--fg-secondary); margin-bottom: 0.5rem;">
+          <p style="font-size: 0.8rem; color: var(--fg-secondary); margin-bottom: 0.5rem; font-weight: 600;">
             Every element adheres strictly to two colors. Zero blue, zero purple.
           </p>
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+          <div class="radio-card-grid">
+            <label class="radio-card-label">
               <input type="radio" name="scheme-choice" value="monochrome" style="accent-color: var(--fg-primary);">
               <span><strong>Pure Monochromatic</strong> (Black &amp; Crisp White)</span>
             </label>
-            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <label class="radio-card-label">
               <input type="radio" name="scheme-choice" value="emerald" style="accent-color: var(--fg-primary);">
-              <span><strong>Botanical Emerald</strong> (Deep Forest &amp; Fresh Mint)</span>
+              <span><strong>Botanical Emerald</strong> (Forest &amp; Fresh Mint)</span>
             </label>
-            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <label class="radio-card-label">
               <input type="radio" name="scheme-choice" value="ochre" style="accent-color: var(--fg-primary);">
-              <span><strong>Warm Ochre</strong> (Espresso Charcoal &amp; Earthy Ochre)</span>
+              <span><strong>Warm Ochre</strong> (Espresso &amp; Earthy Ochre)</span>
             </label>
           </div>
         </div>
@@ -104,19 +106,19 @@
         </div>
 
         <!-- Export JSON (FR-29) -->
-        <div style="padding: 1rem 0; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+        <div class="settings-action-row">
           <div>
-            <strong style="display: block;">Export Habit Data (JSON)</strong>
-            <small style="color: var(--fg-secondary);">Download an unencrypted portable JSON backup of all your habits, streaks, and completion history.</small>
+            <strong style="display: block; font-size: 0.95rem;">Export Habit Data (JSON)</strong>
+            <small style="color: var(--fg-secondary); font-size: 0.8rem;">Download an unencrypted portable JSON backup of all your habits, streaks, and completion history.</small>
           </div>
           <button type="button" id="export-data-btn" class="btn btn-primary">Download Backup</button>
         </div>
 
         <!-- Import JSON (FR-30) -->
-        <div style="padding: 1rem 0; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+        <div class="settings-action-row">
           <div>
-            <strong style="display: block;">Import Habit Data</strong>
-            <small style="color: var(--fg-secondary);">Restore your habits and streaks from a previously saved JSON file.</small>
+            <strong style="display: block; font-size: 0.95rem;">Import Habit Data</strong>
+            <small style="color: var(--fg-secondary); font-size: 0.8rem;">Restore your habits and streaks from a previously saved JSON file.</small>
           </div>
           <label class="btn" style="cursor: pointer;">
             Choose File...
@@ -125,27 +127,27 @@
         </div>
 
         <!-- Demo Data Loader -->
-        <div style="padding: 1rem 0; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+        <div class="settings-action-row">
           <div>
-            <strong style="display: block;">Seed Starter Data</strong>
-            <small style="color: var(--fg-secondary);">Pre-populate starter habits and check-in logs to test analytics and streak calculations.</small>
+            <strong style="display: block; font-size: 0.95rem;">Seed Starter Data</strong>
+            <small style="color: var(--fg-secondary); font-size: 0.8rem;">Pre-populate starter habits and check-in logs to test analytics and streak calculations.</small>
           </div>
           <button type="button" id="seed-demo-btn" class="btn">Load Sample Data</button>
         </div>
 
         <!-- Reset All Data (FR-31) -->
-        <div style="padding: 1rem 0; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+        <div class="settings-action-row">
           <div>
-            <strong style="display: block;">Factory Reset</strong>
-            <small style="color: var(--fg-secondary);">Permanently erase all stored habits, completions, and logs.</small>
+            <strong style="display: block; font-size: 0.95rem;">Factory Reset</strong>
+            <small style="color: var(--fg-secondary); font-size: 0.8rem;">Permanently erase all stored habits, completions, and logs.</small>
           </div>
           <button type="button" id="reset-all-btn" class="btn btn-danger">Erase All Data</button>
         </div>
 
         <!-- Storage Quota Meter (NFR-03, Section 2.5) -->
-        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.8rem; color: var(--fg-secondary); display: flex; justify-content: space-between;">
-          <span>Storage Usage:</span>
-          <span id="storage-usage-meter" style="font-weight: 700; font-variant-numeric: tabular-nums;">Calculating...</span>
+        <div class="storage-meter-box">
+          <span>LOCAL STORAGE USAGE:</span>
+          <span id="storage-usage-meter" style="font-weight: 900; font-variant-numeric: tabular-nums;">Calculating...</span>
         </div>
       </section>
 
