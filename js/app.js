@@ -505,9 +505,19 @@ const DashboardPage = {
     const isSchedToday = Streaks.isScheduled(habit, today);
     const streakInfo = Streaks.getStreakInfo(habit);
 
+    const cat = (habit.category || 'General').toLowerCase().trim();
+    let topicSlug = 'general';
+    if (cat.includes('health')) topicSlug = 'health';
+    else if (cat.includes('fit') || cat.includes('sport') || cat.includes('walk') || cat.includes('run')) topicSlug = 'fitness';
+    else if (cat.includes('study') || cat.includes('learn') || cat.includes('read')) topicSlug = 'study';
+    else if (cat.includes('mind') || cat.includes('meditat')) topicSlug = 'mind';
+    else if (cat.includes('work') || cat.includes('productiv')) topicSlug = 'work';
+    else if (cat.includes('person') || cat.includes('journal') || cat.includes('grow')) topicSlug = 'personal';
+
     const card = document.createElement('article');
-    card.className = `habit-card ${isCompletedToday ? 'completed-today' : ''}`;
+    card.className = `habit-card topic-${topicSlug} ${isCompletedToday ? 'completed-today' : ''}`;
     card.dataset.id = habit.id;
+    card.dataset.topic = topicSlug;
 
     // Build 7-day mini strip
     let weekDotsHtml = '';
@@ -534,7 +544,7 @@ const DashboardPage = {
 
       weekDotsHtml += `
         <div class="day-dot-item" title="${title}">
-          <span>${dayLetter}</span>
+          <span class="day-label">${dayLetter}</span>
           <button type="button" class="${dotClass}" data-habit-id="${habit.id}" data-date="${dISO}" aria-label="${title}">
             ${isDone ? '&#10003;' : ''}
           </button>
@@ -544,19 +554,24 @@ const DashboardPage = {
 
     card.innerHTML = `
       <div class="habit-card-header">
-        <div class="habit-title-group">
-          ${habit.category ? `<span class="habit-category-tag">${this.escapeHtml(habit.category)}</span>` : ''}
-          <h2 class="habit-name">${this.escapeHtml(habit.name)}</h2>
-          ${habit.description ? `<p class="habit-description">${this.escapeHtml(habit.description)}</p>` : ''}
+        <div class="habit-main-col">
+          <button type="button" 
+                  class="checkin-btn ${isCompletedToday ? 'checked' : ''}" 
+                  data-action="toggle-today" 
+                  data-id="${habit.id}" 
+                  title="${isCompletedToday ? 'Completed today (click to undo)' : 'Mark completed today'}"
+                  aria-label="${isCompletedToday ? 'Undo completion for today' : 'Complete habit today'}">
+            ${isCompletedToday ? '&#10003;' : ''}
+          </button>
+          <div class="habit-title-group">
+            <div class="habit-badge-row">
+              <span class="habit-category-tag">${this.escapeHtml(habit.category || 'General')}</span>
+              <span class="streak-badge-inline">&#9889; ${streakInfo.current}d</span>
+            </div>
+            <h2 class="habit-name">${this.escapeHtml(habit.name)}</h2>
+            ${habit.description ? `<p class="habit-description">${this.escapeHtml(habit.description)}</p>` : ''}
+          </div>
         </div>
-        <button type="button" 
-                class="checkin-btn ${isCompletedToday ? 'checked' : ''}" 
-                data-action="toggle-today" 
-                data-id="${habit.id}" 
-                title="${isCompletedToday ? 'Completed today (click to undo)' : 'Mark completed today'}"
-                aria-label="${isCompletedToday ? 'Undo completion for today' : 'Complete habit today'}">
-          ${isCompletedToday ? '&#10003;' : '&#9675;'}
-        </button>
       </div>
 
       <div class="week-strip">
@@ -565,9 +580,9 @@ const DashboardPage = {
 
       <div class="habit-card-footer">
         <div class="streak-badge" title="Current streak / Best streak">
-          <span aria-hidden="true">&#9889;</span>
-          <span>${streakInfo.current} day${streakInfo.current === 1 ? '' : 's'}</span>
-          <span style="opacity: 0.6; font-size: 0.75rem;">(Best: ${streakInfo.longest}d)</span>
+          <span aria-hidden="true">&#9733;</span>
+          <span>${streakInfo.current}d streak</span>
+          <span class="streak-best-text">(Best: ${streakInfo.longest}d)</span>
         </div>
         <div class="card-actions">
           <a href="add-habit.html?edit=${encodeURIComponent(habit.id)}" class="btn-text-action" title="Edit habit">Edit</a>

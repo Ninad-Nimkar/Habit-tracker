@@ -115,46 +115,20 @@
           </select>
           <button type="submit" class="btn btn-primary btn-sm">Add Habit</button>
         </form>
-
-        <div class="template-chips-row">
-          <span class="template-label">Popular presets:</span>
-          <button type="button" class="template-chip" data-name="Drink 2L Water" data-cat="Health">+ 2L Water</button>
-          <button type="button" class="template-chip" data-name="20-Min Reading" data-cat="Study">+ 20-min Reading</button>
-          <button type="button" class="template-chip" data-name="Walk 10,000 Steps" data-cat="Fitness">+ 10k Steps</button>
-          <button type="button" class="template-chip" data-name="10-Min Meditation" data-cat="Mind">+ Meditate</button>
-          <button type="button" class="template-chip" data-name="Evening Journal" data-cat="Personal">+ Journal</button>
-        </div>
       </section>
 
-      <!-- Search, Filters, and Layout Controls (FR-21, FR-22, FR-23) -->
+      <!-- Filter Controls & View Switcher (FR-21) -->
       <section class="controls-bar" aria-label="Habit Controls">
-        <div class="search-box">
-          <span aria-hidden="true">&#9906;</span>
-          <input type="search" id="search-input" placeholder="Search habits..." aria-label="Search habits by name">
+        <div class="filter-group" role="group" aria-label="Habit Status Filters">
+          <button type="button" class="pill-filter active" data-filter="all">All</button>
+          <button type="button" class="pill-filter" data-filter="pending">Pending</button>
+          <button type="button" class="pill-filter" data-filter="completed">Done</button>
+          <button type="button" class="pill-filter" data-filter="archived">Archived</button>
         </div>
 
-        <div class="controls-right">
-          <div class="filter-group" role="group" aria-label="Habit Status Filters">
-            <button type="button" class="pill-filter active" data-filter="all">All</button>
-            <button type="button" class="pill-filter" data-filter="pending">Pending</button>
-            <button type="button" class="pill-filter" data-filter="completed">Done</button>
-            <button type="button" class="pill-filter" data-filter="archived">Archived</button>
-          </div>
-
-          <select id="category-filter" class="select-custom" aria-label="Filter by Category">
-            <option value="all">All</option>
-          </select>
-
-          <select id="sort-filter" class="select-custom" aria-label="Sort Habits">
-            <option value="name">Sort: A-Z</option>
-            <option value="streak">Sort: Streak</option>
-            <option value="created">Sort: Newest</option>
-          </select>
-
-          <button id="view-toggle-btn" class="btn btn-sm btn-icon" title="Toggle view" aria-label="Switch between card and list layout">
-            &#9776;
-          </button>
-        </div>
+        <button id="view-toggle-btn" class="btn btn-sm" aria-label="Switch between card and list layout">
+          List View
+        </button>
       </section>
 
       <!-- Habit Cards Container (FR-06) -->
